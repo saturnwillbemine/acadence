@@ -4,6 +4,8 @@ import '@mantine/core/styles.css';
 
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme, MantineColorsTuple } from '@mantine/core';
 
+import Shell from './components/AppShell';
+
 const myColor: MantineColorsTuple = [
   '#f1fbef',
   '#e1f4dd',
@@ -24,22 +26,18 @@ const theme = createTheme({
 });
 
 export const metadata = {
-  title: 'My Mantine app',
-  description: 'I have followed setup instructions carefully',
+  title: 'Acadence',
+  description: 'Attendance Management Application',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children, } : { children : React.ReactNode;}) {
   return (
     <html lang="en" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}><Shell main={children} /></MantineProvider>
       </body>
     </html>
   );
