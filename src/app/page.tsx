@@ -3,7 +3,6 @@
 
 import { Burger, AppShell, Group, Skeleton, Image } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
-import AcadenceLogo from '../../public/acadence.png';
 
 export default function Home() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -24,11 +23,11 @@ export default function Home() {
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
           <Image
-            src={AcadenceLogo}
+            src='/images/acadence.png'
             alt="Acadence Logo"
             height={30}
             width={30}
-            fit="contain"/>
+            />
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
