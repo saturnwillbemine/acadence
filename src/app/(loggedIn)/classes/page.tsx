@@ -1,6 +1,6 @@
-export default function Home() {
+export default function Classes() {
 
   return (
-    <>Welcome to the class page!</>
+    <>Welcome to the classes page!</>
   );
 }
