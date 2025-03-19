@@ -79,8 +79,8 @@ export default function Shell({ main }: { main : React.ReactNode }) {
           collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
         }}
         padding="md">
-          
-        <AppShell.Header>
+
+        <AppShell.Header style={{ display: 'flex', flexDirection: 'row'}}>
           <Group h="100%" px="md">
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
@@ -93,6 +93,10 @@ export default function Shell({ main }: { main : React.ReactNode }) {
               priority
             />
           </Group>
+
+          <div style={{marginLeft: 'auto', marginTop: '50px', marginRight: '15px'}}>
+            Welcome, Professor!
+          </div>
         </AppShell.Header>
 
         <AppShell.Navbar p="md" style={{ display: 'flex', flexDirection: 'column' }}>  
