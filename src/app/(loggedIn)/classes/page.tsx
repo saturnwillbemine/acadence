@@ -1,6 +1,6 @@
 export default function Home() {
 
   return (
-    <>This is the login page!!!</>
+    <>Welcome to the class page!</>
   );
 }
