@@ -31,7 +31,6 @@ export default function Shell({ main }: { main : React.ReactNode }) {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
-    // These are for the navlinks in the navbar to format them and allow me to click through them and keep an active tab
 
     // maps the navbar data to create the navlinks for the navbar
     const setActiveIndex = useNavStore((state:any ) => state.setActiveIndex);
@@ -49,6 +48,7 @@ export default function Shell({ main }: { main : React.ReactNode }) {
       }
     }, [pathname, setActiveIndex]);
 
+    // These are for the navlinks in the navbar to format them and allow me to click through them and keep an active tab 
     const navItems = navbarData.map((item, index) => (
       <NavLink
         href={item.href}
@@ -58,6 +58,8 @@ export default function Shell({ main }: { main : React.ReactNode }) {
         rightSection={item.rightSection}
         leftSection={<item.icon size={16}/>}
         onClick= {() => setActiveIndex(index)}
+        color="myColor"
+        variant={index === activeIndex ? 'filled' : 'light'}
       />
     ));
 
@@ -88,11 +90,6 @@ export default function Shell({ main }: { main : React.ReactNode }) {
         <AppShell.Navbar p="md">  
           Navigation
           {navItems}
-          {Array(5)
-            .fill(0)
-            .map((_, index) => (
-              <Skeleton key={index} h={28} mt="sm" animate={true} />
-            ))}
         </AppShell.Navbar>
         <AppShell.Main>
           {main}

@@ -4,7 +4,7 @@ import '@mantine/core/styles.css';
 
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme, MantineColorsTuple } from '@mantine/core';
 
-import Shell from './components/AppShell';
+import Shell from '../components/AppShell';
 
 const myColor: MantineColorsTuple = [
   '#f1fbef',
@@ -38,8 +38,8 @@ export default function RootLayout({ children, } : { children : React.ReactNode;
       </head>
       <body>
         <MantineProvider theme={theme}>
-          {children}
-          </MantineProvider>
+          <Shell main={children}/>
+        </MantineProvider>
       </body>
     </html>
   );
