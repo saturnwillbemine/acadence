@@ -1,7 +1,6 @@
 export default function Home() {
- 
 
   return (
-    <>Welcome to the dashboard!</>
+    <>Welcome to the class page!</>
   );
 }
