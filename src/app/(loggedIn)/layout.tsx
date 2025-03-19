@@ -30,17 +30,12 @@ export const metadata = {
   description: 'Attendance Management Application',
 };
 
-export default function RootLayout({ children, } : { children : React.ReactNode;}) {
+export default function AppLayout({ children, } : { children : React.ReactNode;}) {
   return (
-    <html lang="en" {...mantineHtmlProps}>
-      <head>
-        <ColorSchemeScript />
-      </head>
-      <body>
+    <section>
         <MantineProvider theme={theme}>
           <Shell main={children}/>
         </MantineProvider>
-      </body>
-    </html>
+    </section>
   );
 }
