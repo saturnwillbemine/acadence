@@ -1,9 +1,28 @@
 'use client';
 
-import { Burger, AppShell, Group, Skeleton } from "@mantine/core";
+import { Burger, AppShell, Group, Skeleton, NavLink } from "@mantine/core";
 import NextImage from "next/image";
 import { useDisclosure } from '@mantine/hooks';
 import Logo from '../../../public/images/learningFull.png';
+import { HiAcademicCap, HiHome, HiMiniArrowRight } from "react-icons/hi2";
+import { useNavStore } from './NavlinkStore'
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+
+// This is the data for the navbar items
+const navbarData = [
+  {
+    icon: HiHome,
+    label: 'Dashboard',
+    rightSection: <HiMiniArrowRight size={16}/>,
+    href: '/dashboard'
+  },
+  { icon: HiAcademicCap, 
+    label: 'Classes',
+    rightSection: <HiMiniArrowRight size={16}/>,
+    href: '/classes'
+  },
+]
 
 // This is a client component, it is used to create the layout of the application for the navbar and header
 export default function Shell({ main }: { main : React.ReactNode }) {
@@ -11,6 +30,36 @@ export default function Shell({ main }: { main : React.ReactNode }) {
     // This makes it so the navbar is collapsed on mobile and expanded on desktop
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+
+    // These are for the navlinks in the navbar to format them and allow me to click through them and keep an active tab
+
+    // maps the navbar data to create the navlinks for the navbar
+    const setActiveIndex = useNavStore((state:any ) => state.setActiveIndex);
+    const activeIndex = useNavStore((state: any) => state.activeIndex);
+    const pathname = usePathname();
+
+
+    // gets the pathname and sets the active index to the current index of the pathname
+    useEffect(() => {
+      if (!pathname) return;
+
+      const currentIndex = navbarData.findIndex((item) => item.href === pathname);
+      if (currentIndex !== -1) {
+        setActiveIndex(currentIndex);
+      }
+    }, [pathname, setActiveIndex]);
+
+    const navItems = navbarData.map((item, index) => (
+      <NavLink
+        href={item.href}
+        key={item.label}
+        active={index === activeIndex}
+        label={item.label}
+        rightSection={item.rightSection}
+        leftSection={<item.icon size={16}/>}
+        onClick= {() => setActiveIndex(index)}
+      />
+    ));
 
     return (
       <AppShell
@@ -36,15 +85,18 @@ export default function Shell({ main }: { main : React.ReactNode }) {
             />
           </Group>
         </AppShell.Header>
-        <AppShell.Navbar p="md">
-          Navbar
+        <AppShell.Navbar p="md">  
+          Navigation
+          {navItems}
           {Array(5)
             .fill(0)
             .map((_, index) => (
               <Skeleton key={index} h={28} mt="sm" animate={true} />
             ))}
         </AppShell.Navbar>
-        <AppShell.Main>{main}</AppShell.Main>
+        <AppShell.Main>
+          {main}
+        </AppShell.Main>
       </AppShell>
     );
   }
