@@ -1,8 +1,20 @@
+'use client';
 import { Card, CardSection, Text, Badge, Button, Group } from '@mantine/core';
 import NextImage from 'next/image';
 import ClassBanner from '../../../public/images/classbanner.jpg';
+import { useRouter } from 'next/navigation';
 
-export default function ClassCard() {
+interface ClassCardProps {
+  className: string;
+  deptName: string;
+  classDesc: string;
+  classID: number;
+}
+
+export default function ClassCard({ className, deptName, classDesc, classID }: ClassCardProps) {
+
+    const router = useRouter();
+
   return (
     <Card shadow="sm" padding="sm" radius="md" withBorder>
       <CardSection>
@@ -13,16 +25,16 @@ export default function ClassCard() {
       </CardSection>
 
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>ClassName</Text>
-        <Badge color="myColor">Block #</Badge>
+        <Text fw={500}>{className}</Text>
+        <Badge color="myColor">{deptName}</Badge>
       </Group>
 
       <Text size="sm" c="dimmed">
-        Class Description
+        {classDesc}
       </Text>
 
-      <Button color="myColor" fullWidth mt="md" radius="md">
-        Book classic tour now
+      <Button color="myColor" fullWidth mt="md" radius="md" onClick={() => router.push(`/class/${classID}`) }>
+        Select Class
       </Button>
     </Card>
   );
