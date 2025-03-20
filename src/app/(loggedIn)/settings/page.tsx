@@ -2,6 +2,6 @@ export default function Settings() {
  
 
   return (
-    <>Welcome to the settings!</>
+    <>there are no settings 🤣🤣🤣🤣</>
   );
 }
