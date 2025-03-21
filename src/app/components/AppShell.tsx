@@ -9,8 +9,7 @@ import { HiAcademicCap,
         HiMiniArrowRight, 
         HiCog, 
         HiArrowRightEndOnRectangle, 
-        HiMiniUsers,
-        HiBookOpen 
+        HiMiniUsers, 
         } from "react-icons/hi2";
 import { useNavStore } from './NavlinkStore'
 import { usePathname, useRouter } from 'next/navigation';
@@ -34,12 +33,6 @@ const navbarData = [
     label: 'Students',
     rightSection: <HiMiniArrowRight size={16}/>,
     href: '/students'
-  },
-  {
-    icon: HiBookOpen,
-    label: 'Attendance',
-    rightSection: <HiMiniArrowRight size={16}/>,
-    href: '/attendance'
   },
   {
     icon: HiCog,
