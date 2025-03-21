@@ -3,7 +3,7 @@ import { TextInput, Button, Container, Title, Paper, Stack, Textarea } from '@ma
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 
-// Example data structure - this would normally come from your API
+// this would normally come from API
 const exampleClassList = {
   classes: [
     {
@@ -33,11 +33,11 @@ export default function CreateClass() {
   });
 
   const handleSubmit = (values: typeof form.values) => {
-    // This is where you would normally make an API request
+
+    // this is where i would normally make an API request
     console.log('Form submitted with values:', values);
     console.log('This would create a new class with ID:', exampleClassList.nextId);
     
-    // Simulate success and redirect
     router.push('/dashboard');
   };
 
