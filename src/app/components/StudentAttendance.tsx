@@ -4,23 +4,23 @@ import { ActionIcon, Avatar, Badge, Group, Table, Text, Tooltip } from '@mantine
 
 const data = [
   {
-    name: 'Robert Wolfkisser',
+    name: 'Yuan Cheng',
     status: 'Present',
   },
   {
-    name: 'Jill Jailbreaker',
+    name: 'Caitlin Frazer',
     status: 'Present',
   },
   {
-    name: 'Henry Silkeater',
+    name: 'Ham Burger',
     status: 'Present',
   },
   {
-    name: 'Bill Horsefighter',
+    name: 'Noelle Paimboeuf',
     status: 'Absent',
   },
   {
-    name: 'Jeremy Footviewer',
+    name: 'Ophelia Lagacé',
     status: 'Late',
   },
 ];
