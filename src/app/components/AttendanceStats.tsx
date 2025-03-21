@@ -2,13 +2,13 @@
 
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { HiMiniTruck } from 'react-icons/hi2';
-import { colorsTuple, Group, Paper, Text, UnstyledButton } from '@mantine/core';
+import { HiCalendarDateRange, HiChevronUp, HiChevronDown } from 'react-icons/hi2';
+import { Group, Paper, Text, UnstyledButton, Tooltip } from '@mantine/core';
 import classes from './module-css/AttendanceStats.module.css';
 
 const data = [
-  { icon: HiMiniTruck, label: 'Absences This Week' },
-  { icon: HiMiniTruck, label: 'Absences This Month' },
+  { icon: HiCalendarDateRange, label: 'Absences This Week' },
+  { icon: HiCalendarDateRange, label: 'Absences This Month' },
 ];
 
 export default function AttendanceStats() {
@@ -20,7 +20,7 @@ export default function AttendanceStats() {
       <div>
         <Text className={classes.label}>{stat.label}</Text>
         <Text fz="xs" className={classes.count}>
-          <span className={classes.value}>#</span> of absences
+          <span className={classes.value}>#</span> absences
         </Text>
       </div>
     </Paper>
@@ -29,24 +29,29 @@ export default function AttendanceStats() {
   return (
     <div className={classes.root}>
       <div className={classes.controls}>
+        <Tooltip label='Next Week'>
         <UnstyledButton
           className={classes.control}
-          onClick={() => setDate((current) => dayjs(current).add(1, 'month').toDate())}
+          onClick={() => setDate((current) => dayjs(current).add(1, 'week').toDate())}
         >
-          <HiMiniTruck size={16} className={classes.controlIcon} />
+          <HiChevronUp size={16} className={classes.controlIcon} />
         </UnstyledButton>
+        </Tooltip>
 
         <div className={classes.date}>
           <Text className={classes.day}>{dayjs(date).format('DD')}</Text>
           <Text className={classes.month}>{dayjs(date).format('MMMM')}</Text>
         </div>
 
+        <Tooltip label='Previous Week'>
         <UnstyledButton
           className={classes.control}
-          onClick={() => setDate((current) => dayjs(current).subtract(1, 'month').toDate())}
+          onClick={() => setDate((current) => dayjs(current).subtract(1, 'week').toDate())}
         >
-          <HiMiniTruck size={16} className={classes.controlIcon} />
+          <HiChevronDown size={16} className={classes.controlIcon} />
         </UnstyledButton>
+        </Tooltip>
+
       </div>
       <Group style={{ flex: 1}}>{stats}</Group>
     </div>
