@@ -2,11 +2,10 @@ import AttendanceStats from "@/app/components/AttendanceStats";
 import StudentTable from '@/app/components/StudentAttendance';
 import AddStudentButton from "@/app/components/AddStudentButton";
 
-export default async function Class({
-  params,
-} : {
-  params: Promise<{classID: number}>
-}) {
+
+// wait for promise and load class ID and data, 
+export default async function Class({ params, } : { params: Promise<{classID: number}> }) {
+
   const { classID } = await params;
 
   return (

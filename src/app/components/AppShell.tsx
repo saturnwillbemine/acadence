@@ -1,6 +1,6 @@
 'use client';
 
-import { Burger, AppShell, Group, Skeleton, NavLink } from "@mantine/core";
+import { Burger, AppShell, Group, NavLink } from "@mantine/core";
 import NextImage from "next/image";
 import { useDisclosure } from '@mantine/hooks';
 import Logo from '../../../public/images/learningFull.png';
@@ -15,7 +15,7 @@ import { useNavStore } from './NavlinkStore'
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-// This is the data for the navbar items
+// this is the data for the navbar items
 const navbarData = [
   {
     icon: HiHome,
@@ -42,12 +42,12 @@ const navbarData = [
   },
 ]
 
-// This is a client component, it is used to create the layout of the application for the navbar and header
+//  this is used to create the layout of the application for the navbar and header
 export default function Shell({ main }: { main : React.ReactNode }) {
 
     const router = useRouter();
 
-    // This makes it so the navbar is collapsed on mobile and on desktop
+    // this makes it so the navbar is collapsed on mobile and on desktop
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure();
 
@@ -57,7 +57,7 @@ export default function Shell({ main }: { main : React.ReactNode }) {
     const activeIndex = useNavStore((state: any) => state.activeIndex);
     const pathname = usePathname();
 
-    // gets the pathname and sets the active index to the current index of the pathname
+    // gets the pathname and sets the active index to the current index of the pathname idk how this works but it finally does
     useEffect(() => {
       if (!pathname) return;
 
@@ -67,7 +67,7 @@ export default function Shell({ main }: { main : React.ReactNode }) {
       }
     }, [pathname, setActiveIndex]);
 
-    // These are for the navlinks in the navbar to format them and allow me to click through them and keep an active tab 
+    // these are for the navlinks in the navbar to format them and allow me to click through them and keep an active tab 
     const navItems = navbarData.map((item, index) => (
       <NavLink
         href={item.href}

@@ -2,6 +2,7 @@
 import { HiOutlineCheck, HiOutlineXMark, HiClock  } from 'react-icons/hi2';
 import { ActionIcon, Avatar, Badge, Group, Table, Text, Tooltip } from '@mantine/core';
 
+// not sure what data i'll pull from api yet but this is pretty close
 const data = [
   {
     name: 'Yuan Cheng',
@@ -25,12 +26,14 @@ const data = [
   },
 ];
 
+// definitely gonna change this later
 const statusColors: Record<string, string> = {
   present: 'myColor',
   absent: 'red',
   late: 'yellow',
 };
 
+// this will probably be async later
 export default function StudentTable() {
   const rows = data.map((item) => (
     <Table.Tr key={item.name}>
