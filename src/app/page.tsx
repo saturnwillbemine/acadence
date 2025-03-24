@@ -16,6 +16,7 @@ import Logo from '../../public/images/acadence.png';
 import { HiArrowSmallRight } from 'react-icons/hi2';
 import { useRouter } from 'next/navigation';
 
+
 export default function Home() {
 
   const router = useRouter();

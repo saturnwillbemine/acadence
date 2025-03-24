@@ -10,8 +10,10 @@ import {
   Text,
   TextInput,
   UnstyledButton,
-  Checkbox,
+  Indicator,
+  Radio,
 } from '@mantine/core';
+import { Calendar, DatePickerProps } from '@mantine/dates'
 import classes from './module-css/StudentList.module.css'
 
 // interface describing the structure of each student row
@@ -134,21 +136,15 @@ export default function StudentListSort() {
 
   // state for tracking sort direction
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
-  
-  // state for tracking selected rows
-  const [selection, setSelection] = useState<string[]>([]);
+
+  // state for tracking selected row
+  const [selection, setSelection] = useState<string>('');
 
   // toggles selection of a single row by student name
   const toggleRow = (name: string) =>
-    setSelection((current) =>
-      current.includes(name) ? current.filter((item) => item !== name) : [...current, name]
-    );
+    setSelection((current) => current === name ? '' : name);
 
-  // toggles selection of all visible rows
-  const toggleAll = () =>
-    setSelection((current) => (current.length === sortedData.length ? [] : sortedData.map((item) => item.name)));
-
-  // handles column sorting when clicking table headers
+  // handles column sorting when clicking table header icons
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
@@ -164,10 +160,10 @@ export default function StudentListSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Table.Tr key={row.name} className={selection.includes(row.name) ? classes.rowSelected : ''}>
+    <Table.Tr key={row.name} className={selection === row.name ? classes.rowSelected : ''}>
       <Table.Td>
-        <Checkbox
-          checked={selection.includes(row.name)}
+        <Radio
+          checked={selection === row.name}
           onChange={() => toggleRow(row.name)}
         />
       </Table.Td>
@@ -175,7 +171,7 @@ export default function StudentListSort() {
       <Table.Td>{row.class}</Table.Td>
     </Table.Tr>
   ));
-
+  
   return (
     <ScrollArea>
       <TextInput
@@ -188,13 +184,7 @@ export default function StudentListSort() {
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
         <Table.Tbody>
           <Table.Tr>
-            <Table.Th w={40}>
-              <Checkbox
-                onChange={toggleAll}
-                checked={selection.length === sortedData.length}
-                indeterminate={selection.length > 0 && selection.length !== sortedData.length}
-              />
-            </Table.Th>
+            <Table.Th w={40} />
             <Th
               sorted={sortBy === 'name'}
               reversed={reverseSortDirection}
@@ -225,6 +215,9 @@ export default function StudentListSort() {
           )}
         </Table.Tbody>
       </Table>
+      <UnstyledButton onClick={() => console.log(selection)}> 
+        Print Selection
+      </UnstyledButton>
     </ScrollArea>
   );
 }

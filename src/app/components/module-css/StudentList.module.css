@@ -6,7 +6,7 @@
     width: 100%;
     padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   
-    @mixin hover {
+    &:hover {
       background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     }
   }
@@ -17,6 +17,9 @@
     border-radius: 21px;
   }
 
-.rowSelected {
-  background-color: var(--mantine-color-blue-light);
+.calendar {
+  background: var(--mantine-color-white);
+  padding: var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-sm);
+  border: 1px solid var(--mantine-color-gray-2);
 }
