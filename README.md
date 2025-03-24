@@ -10,3 +10,5 @@ Created using
   *  Using the Flask framework to handle requests and handle interactions with the database completely separate from any of the features that Next.js provides
 * MySQL database
   * I am using MySQL Workbench connected to a MySQL server I have running on a virtual machine to design the database and from the workbench I am able to edit and define my tables and data.
+* MantineUI
+  * I am using the Mantine UI React Library for a consistent UI styling of the components and also for the use of some of the components I need to move data through in the application.
