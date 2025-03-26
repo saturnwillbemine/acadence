@@ -15,11 +15,34 @@ import NextImage from 'next/image';
 import Logo from '../../public/images/acadence.png';
 import { HiArrowSmallRight } from 'react-icons/hi2';
 import { useRouter } from 'next/navigation';
+import { useForm } from '@mantine/form';
+import { zodResolver } from 'mantine-form-zod-resolver';
+import { z } from 'zod';
 
 
 export default function Home() {
 
   const router = useRouter();
+
+  const loginSchema = z.object({
+    username: z.string({
+      required_error: "Username is required"
+    }),
+    pass: z.string({
+      required_error: "Password must not be empty"
+    }).min(5, {message: "Minimum of 5 characters required"}),
+    keepLogin: z.boolean()
+  })
+
+  const loginForm = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      username: '',
+      pass: '',
+      keepLogin: false
+    },
+    validate: zodResolver(loginSchema),
+  });
 
   return (
     <div className={classes.wrapper}>
@@ -37,21 +60,40 @@ export default function Home() {
           Welcome to Acadence!
         </Title>
         </Group>
+        
+        <form onSubmit={loginForm.onSubmit((values) => console.log(values))}>
+          <TextInput label="Username" 
+          placeholder="username" 
+          size="md"
+          key={loginForm.key('username')}
+          {...loginForm.getInputProps('username')} />
 
-        <TextInput label="Username" placeholder="your-username" size="md" />
-        <PasswordInput label="Password" placeholder="your-password" mt="md" size="md" />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" 
-                size="md"
-                color="myColor" 
-                variant="filled"
-                rightSection={<HiArrowSmallRight size={20} />}
-                justify='space-between'
-                onClick={() => router.push('/dashboard')}
-                //this is where I actually login with the session
-                > 
-          Login
-        </Button>
+          <PasswordInput label="Password" 
+          placeholder="password" 
+          mt="md" 
+          size="md" 
+          key={loginForm.key('pass')}
+          {...loginForm.getInputProps('pass')}/>
+
+          <Checkbox label="Keep me logged in" 
+          mt="xl" 
+          size="md" 
+          key={loginForm.key('keepLogin')}
+          {...loginForm.getInputProps('keepLogin', { type: 'checkbox' })} />
+
+          <Button fullWidth mt="xl" 
+                  size="md"
+                  color="myColor" 
+                  variant="filled"
+                  rightSection={<HiArrowSmallRight size={20} />}
+                  justify='space-between'
+                  type='submit'
+                  //onClick={() => router.push('/dashboard')}
+                  //this is where I actually login with the session
+                  > 
+            Login
+          </Button>
+        </form>
         <Text ta="center" mt="md">
           Forgot your password?{' '}
           <Anchor<'a'> href="#" fw={700} onClick={(event) => event.preventDefault()} c="myColor">
