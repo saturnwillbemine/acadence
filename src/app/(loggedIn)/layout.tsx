@@ -5,6 +5,8 @@ import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme, MantineColorsTuple } from '@mantine/core';
 
 import Shell from '../components/AppShell';
+import CheckAuth from '../components/checkAuth';
+
 
 const myColor: MantineColorsTuple = [
   '#f1fbef',
@@ -31,11 +33,14 @@ export const metadata = {
 };
 
 export default function AppLayout({ children, } : { children : React.ReactNode;}) {
+
   return (
     <section>
+      <CheckAuth>  {/* this is to make sure that the user is logged in*/}
         <MantineProvider theme={theme}>
           <Shell main={children}/>
         </MantineProvider>
+      </CheckAuth>
     </section>
   );
 }
