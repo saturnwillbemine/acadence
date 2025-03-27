@@ -14,6 +14,7 @@ import { HiAcademicCap,
 import { useNavStore } from './NavlinkStore'
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useSession } from "@/scripts/userSessionStore";
 
 // this is the data for the navbar items
 const navbarData = [
@@ -46,6 +47,14 @@ const navbarData = [
 export default function Shell({ main }: { main : React.ReactNode }) {
 
     const router = useRouter();
+    const pathname = usePathname();
+
+
+    const logoutSubmit = () => {
+      useSession.getState().clearSession();
+      router.push('/');
+      console.log(useSession.getState().username)
+    }
 
     // this makes it so the navbar is collapsed on mobile and on desktop
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -55,7 +64,6 @@ export default function Shell({ main }: { main : React.ReactNode }) {
     // maps the navbar data to create the navlinks for the navbar
     const setActiveIndex = useNavStore((state:any ) => state.setActiveIndex);
     const activeIndex = useNavStore((state: any) => state.activeIndex);
-    const pathname = usePathname();
 
     // gets the pathname and sets the active index to the current index of the pathname idk how this works but it finally does
     useEffect(() => {
@@ -82,6 +90,8 @@ export default function Shell({ main }: { main : React.ReactNode }) {
       />
     ));
 
+    const professorName = useSession((state) => state.professorName)
+
     return (
       <AppShell
         header={{ height: 80 }} 
@@ -107,7 +117,7 @@ export default function Shell({ main }: { main : React.ReactNode }) {
           </Group>
 
           <div style={{marginLeft: 'auto', marginTop: '50px', marginRight: '15px'}}>
-            Welcome, Professor!
+            Welcome, Professor {professorName}!
           </div>
         </AppShell.Header>
 
@@ -125,7 +135,7 @@ export default function Shell({ main }: { main : React.ReactNode }) {
               active={false}
               label='Logout'
               leftSection={<HiArrowRightEndOnRectangle size={16}/>}
-              onClick= {() => router.push('/')} //this is where i actually log out and end session
+              onClick= {logoutSubmit} //this is where i actually log out and end session
               color="myColor"
             />
           </div>
