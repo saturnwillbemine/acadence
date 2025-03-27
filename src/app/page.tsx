@@ -18,12 +18,22 @@ import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
+import requestLogin from '@/scripts/requestLogin';
 
 
 export default function Home() {
 
-  const router = useRouter();
+  const router = useRouter() // used for routing
 
+  //handles submit and routing on successful login request
+  const loginSubmit = async (values: any) => {
+    const success = await requestLogin(values.username, values.pass);
+    if (success) {
+      router.push('/dashboard');
+    }
+  };
+
+  // for the clientside validation of the form before sending a request
   const loginSchema = z.object({
     username: z.string({
       required_error: "Username is required"
@@ -32,8 +42,9 @@ export default function Home() {
       required_error: "Password must not be empty"
     }).min(5, {message: "Minimum of 5 characters required"}),
     keepLogin: z.boolean()
-  })
+  });
 
+  // useForm to get the data from the mantine ui forms
   const loginForm = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -61,10 +72,11 @@ export default function Home() {
         </Title>
         </Group>
         
-        <form onSubmit={loginForm.onSubmit((values) => console.log(values))}>
+        <form onSubmit={loginForm.onSubmit((values) => loginSubmit(values))}>
           <TextInput label="Username" 
           placeholder="username" 
           size="md"
+          required
           key={loginForm.key('username')}
           {...loginForm.getInputProps('username')} />
 
@@ -73,6 +85,7 @@ export default function Home() {
           mt="md" 
           size="md" 
           key={loginForm.key('pass')}
+          required
           {...loginForm.getInputProps('pass')}/>
 
           <Checkbox label="Keep me logged in" 
