@@ -5,9 +5,8 @@ interface UserSession {
   isAuthenticated: boolean //if they are logged in or not
   username: string 
   professorName: string
-  professorId: string
+  professorID: number
   hydrated: boolean
-  keepLoggedIn: boolean
   setSession: (data: Partial<UserSession>) => void //sets session data
   clearSession: () => void // log out for session
 }
@@ -18,18 +17,19 @@ export const useSession = create<UserSession>()(
       isAuthenticated: false,
       username: '',
       professorName: '',
-      professorId: '',
+      professorID: 0,
       hydrated: false,
-      keepLoggedIn: false,
       setSession: (data) => set((state) => ({ ...state, ...data })),
-      clearSession: () => set({ 
+      clearSession: () => {
+        localStorage.removeItem('user-session') //clear storage
+        set({ 
         isAuthenticated: false, 
         username: '', 
         professorName: '', 
-        professorId: '', 
+        professorID: 0,
         hydrated: true,
-        keepLoggedIn: false
-      }),
+      })
+    },
     }),
     {
       name: 'user-session',
