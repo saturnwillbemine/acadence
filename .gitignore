@@ -37,6 +37,8 @@ yarn-error.log*
 
 .venv
 
+sample.py
+
 # vercel
 .vercel
 
