@@ -1,0 +1,18 @@
+export default async function requestProfClasses(profID: number) {
+    try {
+        const req: Response = await fetch('http://localhost:5000/getProfClasses', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ professorID: profID })
+        });
+        
+        const data: any = await req.json();
+
+        console.log(data);
+
+        return data;
+    } catch (error) {
+        console.error('Login Failed:', error);
+        return false;
+    }
+}
