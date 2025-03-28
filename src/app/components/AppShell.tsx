@@ -1,6 +1,6 @@
 'use client';
 
-import { Burger, AppShell, Group, NavLink } from "@mantine/core";
+import { Burger, AppShell, Group, NavLink, Button } from "@mantine/core";
 import NextImage from "next/image";
 import { useDisclosure } from '@mantine/hooks';
 import Logo from '../../../public/images/learningFull.png';
@@ -52,8 +52,8 @@ export default function Shell({ main }: { main : React.ReactNode }) {
 
     const logoutSubmit = () => {
       useSession.getState().clearSession();
+      console.log(useSession.getState()); //show state on logout
       router.push('/');
-      console.log(useSession.getState().username)
     }
 
     // this makes it so the navbar is collapsed on mobile and on desktop
@@ -138,6 +138,9 @@ export default function Shell({ main }: { main : React.ReactNode }) {
               onClick= {logoutSubmit} //this is where i actually log out and end session
               color="myColor"
             />
+            <Button onClick={() => console.log(useSession.getState())}>
+              Log current state
+            </Button>
           </div>
         </AppShell.Navbar>
 
