@@ -27,10 +27,10 @@ export default function Home() {
 
   //handles submit and routing on successful login request
   const loginSubmit = async (values: any) => {
-    const success = await requestLogin(values.username, values.pass, values.keepLogin);
+    const success = await requestLogin(values.username, values.pass);
     if (success) {
       router.push('/dashboard');
-      console.log('Form values:', values); // for debugging keepLogin
+      //console.log('Form values:', values); // for debugging keepLogin
     }
   };
 
@@ -42,7 +42,6 @@ export default function Home() {
     pass: z.string({
       required_error: "Password must not be empty"
     }).min(5, {message: "Minimum of 5 characters required"}),
-    keepLogin: z.boolean().default(false)
   });
 
   // useForm to get the data from the mantine ui forms
@@ -51,7 +50,6 @@ export default function Home() {
     initialValues: {
       username: '',
       pass: '',
-      keepLogin: false
     },
     validate: zodResolver(loginSchema),
   });
@@ -88,12 +86,6 @@ export default function Home() {
           key={loginForm.key('pass')}
           required
           {...loginForm.getInputProps('pass')}/>
-
-          <Checkbox label="Keep me logged in" 
-          mt="xl" 
-          size="md" 
-          key={loginForm.key('keepLogin')}
-          {...loginForm.getInputProps('keepLogin', { type: 'checkbox' })} />
 
           <Button fullWidth mt="xl" 
                   size="md"
