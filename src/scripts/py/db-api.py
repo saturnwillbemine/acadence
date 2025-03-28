@@ -90,16 +90,16 @@ def getClasses(data):
     cursor.execute("SELECT * FROM Classes WHERE professorID = %s;", (profID,))
     result = cursor.fetchmany(size=8) ## maximum of 8 classes a professor could have
 
-    returnData = {}
+    returnData = []
 
     for i in range(len(result)):
-        returnData[i] = {
+        returnData.append({
             'classID': result[i][0],
             'professorID': result[i][1],
             'className': result[i][2],
             'classDept': result[i][3],
             'classDesc': result[i][4]
-        }
+        })
 
     return returnData
 
