@@ -1,5 +1,9 @@
+'use client';
 import Class from '@/app/components/ClassCard'
 import { SimpleGrid } from '@mantine/core';
+import requestProfClasses from '@/scripts/requestClasses';
+import { useSession } from '@/scripts/userSessionStore';
+import { useEffect, useState } from 'react';
 
 const sampleClassData = [
   {
@@ -34,19 +38,32 @@ const sampleClassData = [
   },
 ]
 
- const classCardGrid = sampleClassData.map((card, index) => (
+export default function Dashboard() {
+
+  const [classData, setClassData] = useState([])
+  const professorID = useSession((state) => state.professorID)
+
+  useEffect(() => {
+    console.log('Current session state:', useSession.getState());
+
+    const getClasses = async () => {
+      const data = await requestProfClasses(professorID)
+      setClassData(data)
+    }
+    getClasses()
+  }, [professorID]) // makes it rerender for every new professorID
+
+  const classCardGrid = sampleClassData.map((card, index) => (
     <div key={index}>
       <Class
         className={card.className}
         deptName={card.deptName}
         classDesc={card.classDesc}
-        classID={card.classID}
+        classID={card.classID}  
       />
     </div>
     ));
 
-
-export default function Dashboard() {
   return (
     <>
     <SimpleGrid cols={4} spacing='sm'>
