@@ -4,7 +4,7 @@ import '@mantine/core/styles.css';
 
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme, MantineColorsTuple } from '@mantine/core';
 
-import Shell from './components/AppShell';
+import CheckAuth from './components/CheckAuth';
 
 const myColor: MantineColorsTuple = [
   '#f1fbef',
@@ -37,9 +37,11 @@ export default function RootLayout({ children, } : { children : React.ReactNode;
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider theme={theme}>
-          {children}
+        <CheckAuth>  {/* i cant believe this is what was broken the entire time */}
+          <MantineProvider theme={theme}>
+            {children}
           </MantineProvider>
+        </CheckAuth>
       </body>
     </html>
   );

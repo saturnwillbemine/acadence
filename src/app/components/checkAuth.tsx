@@ -5,25 +5,28 @@ import { usePathname, useRouter } from "next/navigation"
 
 export default function CheckAuth({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useSession((state) => state.isAuthenticated)
-  const keepLoggedIn = useSession((state) => state.keepLoggedIn)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-  const [mounted, setMounted] = useState(false)
 
-  //makes sure the appshell and other necessary components are loaded on client side
   useEffect(() => {
     setMounted(true)
   }, [])
 
   useEffect(() => {
-    if (mounted && isAuthenticated && keepLoggedIn && pathname === '/') {
-      router.push('/dashboard') //if user is logged in previously they are pushed
-    } else if (mounted && !isAuthenticated && pathname !== '/') { // making sure user is loaded and logged in 
-      router.push('/')
-    }
-  }, [isAuthenticated, keepLoggedIn, router, mounted, pathname])
+    if (!mounted) return
 
-  if ( !mounted || !isAuthenticated ) return null
+    if (!isAuthenticated && pathname !== '/') {
+      // not authenticated and not at login, redirect to login
+      router.push('/')
+    } else if (isAuthenticated && pathname === '/') {
+      // user is authenticated and at root path, send to dash
+      router.push('/dashboard')
+    }
+  }, [isAuthenticated, pathname, mounted, router])
+
+  // block render if not authenticated and not at login page
+  if (!mounted || (!isAuthenticated && pathname !== '/')) return null
 
   return <>{children}</>
 }

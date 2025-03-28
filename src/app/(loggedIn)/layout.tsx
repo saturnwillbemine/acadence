@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme, MantineColorsTuple } from '@mantine/core';
 
 import Shell from '../components/AppShell';
-import CheckAuth from '../components/checkAuth';
+import CheckAuth from '../components/CheckAuth';
 
 
 const myColor: MantineColorsTuple = [
