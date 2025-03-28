@@ -7,6 +7,7 @@ interface UserSession {
   professorName: string
   professorId: string
   hydrated: boolean
+  keepLoggedIn: boolean
   setSession: (data: Partial<UserSession>) => void //sets session data
   clearSession: () => void // log out for session
 }
@@ -19,13 +20,15 @@ export const useSession = create<UserSession>()(
       professorName: '',
       professorId: '',
       hydrated: false,
+      keepLoggedIn: false,
       setSession: (data) => set((state) => ({ ...state, ...data })),
       clearSession: () => set({ 
         isAuthenticated: false, 
         username: '', 
         professorName: '', 
         professorId: '', 
-        hydrated: true
+        hydrated: true,
+        keepLoggedIn: false
       }),
     }),
     {

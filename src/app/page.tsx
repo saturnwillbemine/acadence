@@ -27,9 +27,10 @@ export default function Home() {
 
   //handles submit and routing on successful login request
   const loginSubmit = async (values: any) => {
-    const success = await requestLogin(values.username, values.pass);
+    const success = await requestLogin(values.username, values.pass, values.keepLogin);
     if (success) {
       router.push('/dashboard');
+      console.log('Form values:', values); // for debugging keepLogin
     }
   };
 
@@ -41,7 +42,7 @@ export default function Home() {
     pass: z.string({
       required_error: "Password must not be empty"
     }).min(5, {message: "Minimum of 5 characters required"}),
-    keepLogin: z.boolean()
+    keepLogin: z.boolean().default(false)
   });
 
   // useForm to get the data from the mantine ui forms
