@@ -8,6 +8,7 @@ import mysql.connector as mysql
 from dotenv import load_dotenv
 import os
 import bcrypt
+from datetime import datetime
 
 load_dotenv()
 
@@ -111,7 +112,7 @@ def getClasses(data):
 
     return returnData
 
-###################### get class rosters
+###################### get class rosters and attendances
 
 @app.route("/getRoster", methods=['POST', 'OPTIONS'])
 def getRoster():
@@ -122,12 +123,39 @@ def getRoster():
     data = request.get_json()
     return jsonify(getClassRoster(data))
 
+
 def getClassRoster(data):
     db, cursor = getCursor()
 
-    classID = data.get("classID")
-    studentName = data.get("studentName")
+    try:
+        classID = data.get("classID")
+        currentDate = datetime.now().strftime('%Y-%m-%d')
 
+        # grab list of students
+        cursor.execute("SELECT studentID, studentName FROM Student WHERE classID = %s", (classID,))
+        students = cursor.fetchall()
+
+        # grab attendance for today
+        cursor.execute("SELECT studentID, studentStatus FROM Attendance WHERE classID = %s AND recordDate = %s", (classID, currentDate))
+        attendance = cursor.fetchall()
+
+        attendanceDict = {row[0]: row[1] for row in attendance}
+
+        returnData = []
+
+        for student in students:
+            studentID, studentName = student
+            status = attendanceDict.get(studentID, 'Present') #return present if no entry in dict
+            returnData.append({
+                'studentID': studentID,
+                'studentName': studentName,
+                'status': status
+            })
+
+        return returnData
+
+    finally:
+        closeConnection(db, cursor)
 
 ######################
 app.run(host="0.0.0.0", port=5000)
