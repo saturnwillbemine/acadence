@@ -11,7 +11,6 @@ export default async function requestLogin(user: string, pass: string) {
         });
         
         const data: any = await req.json();
-
         console.log('Login response:', data); // this is the login response im getting from request
 
         if (data.success) {
@@ -26,9 +25,7 @@ export default async function requestLogin(user: string, pass: string) {
             console.log('Session after login:', useSession.getState());
             return true;    
           }
-
           return false;
-
     } catch (error) {
         console.error('Login Failed:', error);
         return false;
