@@ -1,7 +1,6 @@
 import AttendanceStats from "@/app/components/AttendanceStats";
-import StudentTable from '@/app/components/StudentAttendance';
+import StudentAttendance from '@/app/components/StudentAttendance';
 import AddStudentButton from "@/app/components/AddStudentButton";
-
 
 // wait for promise and load class ID and data, 
 export default async function Class({ params, } : { params: Promise<{classID: number}> }) {
@@ -20,9 +19,9 @@ export default async function Class({ params, } : { params: Promise<{classID: nu
         <h2>Class Roster</h2>
         <AddStudentButton />
       </div>
-      <StudentTable />
+      <StudentAttendance classID={classID}/>
       This is the class page, they should have a different one for each classID
-      This one's classID is {classID}
+      This one's classID is {classID} 
     </div>
   );
 }

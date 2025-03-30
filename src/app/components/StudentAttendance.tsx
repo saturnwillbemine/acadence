@@ -1,47 +1,42 @@
 'use client';
 import { HiOutlineCheck, HiOutlineXMark, HiClock  } from 'react-icons/hi2';
 import { ActionIcon, Avatar, Badge, Group, Table, Text, Tooltip } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import requestRoster from '@/scripts/requestRoster';
 
-// not sure what data i'll pull from api yet but this is pretty close
-const data = [
-  {
-    name: 'Yuan Cheng',
-    status: 'Present',
-  },
-  {
-    name: 'Caitlin Frazer',
-    status: 'Present',
-  },
-  {
-    name: 'Ham Burger',
-    status: 'Present',
-  },
-  {
-    name: 'Noelle Paimboeuf',
-    status: 'Absent',
-  },
-  {
-    name: 'Ophelia Lagacé',
-    status: 'Late',
-  },
-];
 
-// definitely gonna change this later
 const statusColors: Record<string, string> = {
   present: 'myColor',
-  absent: 'red',
+  excused: 'orange',
+  unexcused: 'red',
   late: 'yellow',
 };
 
-// this will probably be async later
-export default function StudentTable() {
-  const rows = data.map((item) => (
-    <Table.Tr key={item.name}>
+interface StudentAttendanceData {
+  studentID: number;
+  studentName: string;
+  status: string;
+}
+
+
+export default function StudentAttendance({ classID }: { classID: number }) {
+  const [attendanceData, setAttendanceData] = useState<StudentAttendanceData[]>([]);
+
+  useEffect(() => {
+    const fetchRoster = async () => {
+      const data = await requestRoster(classID);
+      setAttendanceData(data);
+    }
+    fetchRoster();
+  }, [classID])
+
+  const rows = attendanceData.map((item) => (
+    <Table.Tr key={item.studentID}>
       <Table.Td>
         <Group gap="sm">
           <Avatar size={30} src="https://cdn-icons-png.flaticon.com/256/4122/4122823.png" radius={30} />
           <Text fz="sm" fw={500}>
-            {item.name}
+            {item.studentName}
           </Text>
         </Group>
       </Table.Td>
@@ -50,16 +45,17 @@ export default function StudentTable() {
         <Badge color={statusColors[item.status.toLowerCase()]} variant="light">
           {item.status}
         </Badge>
+        
       </Table.Td>
 
       <Table.Td>
         <Group gap={0} justify="flex-end">
-          <Tooltip label='Mark Present'>
+          <Tooltip label='Mark Excused Absence'>
             <ActionIcon variant="subtle" color="myColor">
                 <HiOutlineCheck size={16}/>
             </ActionIcon>
           </Tooltip>
-          <Tooltip label='Mark Absent'>
+          <Tooltip label='Mark Unexcused Absence'>
             <ActionIcon variant="subtle" color="red">
                 <HiOutlineXMark size={16}/>
             </ActionIcon>
