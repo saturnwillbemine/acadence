@@ -40,14 +40,14 @@ const sampleClassData = [
 
 export default function Dashboard() {
 
-  interface ClassData {
+  interface ClassCardProps {
     className: string;
     classDept: string;
     classDesc: string;
     classID: number;
   }
   
-  const [classData, setClassData] = useState<ClassData[]>([])
+  const [classData, setClassData] = useState<ClassCardProps[]>([])
   const professorID = useSession((state) => state.professorID)
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function Dashboard() {
 
     const getClasses = async () => {
       const data = await requestProfClasses(professorID)
-      const classArray = Object.values(data) as ClassData[] //convert to array to use .map
+      const classArray = Object.values(data) as ClassCardProps[] //convert to array to use .map
       setClassData(classArray)
     }
     getClasses()
