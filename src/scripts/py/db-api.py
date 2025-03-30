@@ -5,20 +5,28 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector as mysql
-import json
+from dotenv import load_dotenv
+import os
 import bcrypt
 
+load_dotenv()
+
+SITE_URL=os.getenv('SITE_URL')
+DB_USER=os.getenv('DB_USER')
+DB_PASS=os.getenv('DB_PASS')
+DB_HOST=os.getenv('DB_HOST')
+
 app = Flask(__name__)
-CORS(app, origins='http://localhost:3000') #allows for cross-origin resource sharing
+CORS(app, origins=SITE_URL) #allows for cross-origin resource sharing
 
 ###################### database connection
 
 def getCursor():
     db = mysql.connect(
-        host="10.101.128.56",
+        host=DB_HOST,
         port="6033",
-        user="website",
-        password="web123",
+        user=DB_USER,
+        password=DB_PASS,
         database="Acadence")
 
     cursor = db.cursor()
@@ -122,9 +130,4 @@ def getClassRoster(data):
 
 
 ######################
-
-
-
-
-
 app.run(host="0.0.0.0", port=5000)

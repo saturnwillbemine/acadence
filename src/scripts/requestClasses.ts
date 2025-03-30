@@ -2,7 +2,7 @@ export default async function requestProfClasses(profID: number) {
     try {
         console.log('Sending request with profID:', profID); // Add this debug line
 
-        const req: Response = await fetch('http://localhost:5000/getProfClasses', {
+        const req: Response = await fetch( process.env.NEXT_PUBLIC_API_URL + '/getProfClasses', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ professorID: profID })

@@ -4,7 +4,7 @@ export default async function requestLogin(user: string, pass: string) {
     try {
         useSession.getState().clearSession();
 
-        const req: Response = await fetch('http://localhost:5000/validate', {
+        const req: Response = await fetch( process.env.NEXT_PUBLIC_API_URL + '/validate', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username: user, pass: pass })
