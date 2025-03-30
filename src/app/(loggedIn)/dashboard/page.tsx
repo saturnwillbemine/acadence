@@ -40,24 +40,32 @@ const sampleClassData = [
 
 export default function Dashboard() {
 
-  const [classData, setClassData] = useState([])
+  interface ClassData {
+    className: string;
+    classDept: string;
+    classDesc: string;
+    classID: number;
+  }
+  
+  const [classData, setClassData] = useState<ClassData[]>([])
   const professorID = useSession((state) => state.professorID)
 
   useEffect(() => {
-    console.log('Current session state:', useSession.getState());
+    console.log('Current session state:', useSession.getState()); //debugging session state
 
     const getClasses = async () => {
       const data = await requestProfClasses(professorID)
-      setClassData(data)
+      const classArray = Object.values(data) as ClassData[] //convert to array to use .map
+      setClassData(classArray)
     }
     getClasses()
   }, [professorID]) // makes it rerender for every new professorID
 
-  const classCardGrid = sampleClassData.map((card, index) => (
+  const classCardGrid = classData.map((card, index) => (
     <div key={index}>
       <Class
         className={card.className}
-        deptName={card.deptName}
+        deptName={card.classDept}
         classDesc={card.classDesc}
         classID={card.classID}  
       />
@@ -65,10 +73,8 @@ export default function Dashboard() {
     ));
 
   return (
-    <>
     <SimpleGrid cols={4} spacing='sm'>
       {classCardGrid}
     </SimpleGrid>
-    </>
   );
 }

@@ -10,7 +10,7 @@ export default async function requestProfClasses(profID: number) {
         
         const data: any = await req.json();
 
-        console.log(data);
+        console.log("this is the", data);
 
         return data;
     } catch (error) {
