@@ -99,3 +99,8 @@ An example of how I'm adding an absence to the record table, this would show up 
 This is what the professor would see after marking them.
 
 https://i.ibb.co/01zzN0V/Screenshot-2025-03-31-at-8-44-06-AM.png
+
+## Problems
+Some big problems I encountered were some state and session management issues. I have a function that checks if a user is authenticated to access any of the pages under the **(loggedIn)** group and the function was sometimes incorrectly/randomly redirecting the user sometimes not allowing them to use the application. I fixed this by using a state/session management library called zustand and it allowed me to create a store of the user-session and all of the necessary data and store that data in the browser.
+
+ I was also having some issues when it came to making the requests to the servers since I am using a proxy server to route all of the requests to the server actually running the app. but I solved that by adding some of the headers needed for the request to succeed before executing the code for the request.
