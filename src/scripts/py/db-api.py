@@ -139,7 +139,7 @@ def getClassRoster(data):
         cursor.execute("SELECT studentID, studentStatus FROM Attendance WHERE classID = %s AND recordDate = %s", (classID, currentDate))
         attendance = cursor.fetchall()
 
-        attendanceDict = {row[0]: row[1] for row in attendance}
+        attendanceDict = {entry[0]: entry[1] for entry in attendance}
 
         returnData = []
 
