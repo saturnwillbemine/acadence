@@ -226,4 +226,37 @@ def createClass(data):
 
 ######################
 
+@app.route("/getAllStudents", methods=['POST', 'OPTIONS'])
+def getAllStudentsRequest():
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
+        return response
+    data = request.get_json()
+    return jsonify(getAllStudents(data))
+
+def getAllStudents(data):
+    db, cursor = getCursor()
+
+    try:
+        professorID = data.get("professorID")
+
+        # grab list of students from every class
+        cursor.execute("SELECT studentID, studentName, className From Student NATURAL JOIN Classes WHERE professorID = %s", (professorID,))
+        result = cursor.fetchall()
+
+        returnData = []
+
+        for i in range(len(result)):
+            returnData.append({
+                'studentID': result[i][0],
+                'studentName': result[i][1],
+                'className': result[i][2]
+            })
+        return returnData
+
+    finally:
+        closeConnection(db, cursor)
+
+######################
 app.run(host="0.0.0.0", port=5000)

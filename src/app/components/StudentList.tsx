@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiChevronDown, HiChevronUp, HiMagnifyingGlass, HiMiniMinus } from 'react-icons/hi2';
 import {
   Center,
@@ -10,16 +10,15 @@ import {
   Text,
   TextInput,
   UnstyledButton,
-  Indicator,
   Radio,
 } from '@mantine/core';
-import { Calendar, DatePickerProps } from '@mantine/dates'
 import classes from './module-css/StudentList.module.css'
+import requestAllStudents from '@/scripts/requestAllStudents';
 
 // interface describing the structure of each student row
 interface RowData {
-  name: string;
-  class: string;
+  studentName: string;
+  className: string;
 }
 
 // interface for the table header props
@@ -30,7 +29,7 @@ interface ThProps {
   onSort: () => void;
 }
 
-// component for rendering sortable table headers with icons
+// component for rendering re-sortable table headers with icons
 function Th({ children, reversed, sorted, onSort }: ThProps) {
   const Icon = sorted ? (reversed ? HiChevronUp : HiChevronDown) : HiMiniMinus;
   return (
@@ -53,7 +52,9 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
+    Object.values(item).some((value) => 
+      String(value).toLowerCase().includes(query)
+    )
   );
 }
 
@@ -80,56 +81,25 @@ function sortData(
   );
 }
 
-const data = [
-    {
-      name: 'Yuan Cheng',
-      class: 'Class 1',
-    },
-    {
-      name: 'Caitlin Frazer',
-      class: 'Class 1',
-    },
-    {
-      name: 'Ham Burger',
-      class: 'Class 1',
-    },
-    {
-      name: 'Noelle Paimboeuf',
-      class: 'Class 1',
-    },
-    {
-      name: 'Ophelia Lagacé',
-      class: 'Class 1',
-    },
-    {
-        name: 'Yakha Melikov',
-        class: 'Class 2',
-      },
-      {
-        name: 'Havin van Koolwijk',
-        class: 'Class 2',
-      },
-      {
-        name: 'Tetsu Oyokawa',
-        class: 'Class 2',
-      },
-      {
-        name: 'Spartacus Yermakov',
-        class: 'Class 2',
-      },
-      {
-        name: 'Martin Anton',
-        class: 'Class 2',
-      },
-  ];
 
-export default function StudentListSort() {
+export default function StudentListSort({ professorID } : {professorID : number}) {
+
+   const [rowData, setRowData] = useState<RowData[]>([]);
+  
+     const fetchAllStudents = async () => {
+        const data = await requestAllStudents(professorID);
+        setRowData(data);
+      }
+
+    useEffect(() => {
+      fetchAllStudents();
+    }, [professorID])
 
   // state for managing search input
   const [search, setSearch] = useState('');
 
   // state for storing the sorted/filtered data
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState<RowData[]>([]);
 
   // state for tracking which column is being sorted
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -140,6 +110,10 @@ export default function StudentListSort() {
   // state for tracking selected row
   const [selection, setSelection] = useState<string>('');
 
+  useEffect(() => {
+    setSortedData(sortData(rowData, { sortBy, reversed: reverseSortDirection, search }));
+  }, [rowData, sortBy, reverseSortDirection, search]);
+
   // toggles selection of a single row by student name
   const toggleRow = (name: string) =>
     setSelection((current) => current === name ? '' : name);
@@ -149,26 +123,26 @@ export default function StudentListSort() {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    setSortedData(sortData(rowData, { sortBy: field, reversed, search }));
   };
 
   // handles search input changes and updates filtered data
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+    setSortedData(sortData(rowData, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
   const rows = sortedData.map((row) => (
-    <Table.Tr key={row.name} className={selection === row.name ? classes.rowSelected : ''}>
+    <Table.Tr key={row.studentName} className={selection === row.studentName ? classes.rowSelected : ''}>
       <Table.Td>
         <Radio
-          checked={selection === row.name}
-          onChange={() => toggleRow(row.name)}
+          checked={selection === row.studentName}
+          onChange={() => toggleRow(row.studentName)}
         />
       </Table.Td>
-      <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.class}</Table.Td>
+      <Table.Td>{row.studentName}</Table.Td>
+      <Table.Td>{row.className}</Table.Td>
     </Table.Tr>
   ));
   
@@ -186,16 +160,16 @@ export default function StudentListSort() {
           <Table.Tr>
             <Table.Th w={40} />
             <Th
-              sorted={sortBy === 'name'}
+              sorted={sortBy === 'studentName'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
+              onSort={() => setSorting('studentName')}
             >
               Name
             </Th>
             <Th
-              sorted={sortBy === 'class'}
+              sorted={sortBy === 'className'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('class')}
+              onSort={() => setSorting('className')}
             >
               Class
             </Th>
@@ -206,7 +180,7 @@ export default function StudentListSort() {
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={Object.keys(data[0]).length + 1}>
+              <Table.Td colSpan={2}>
                 <Text fw={500} ta="center">
                   Nothing found
                 </Text>
