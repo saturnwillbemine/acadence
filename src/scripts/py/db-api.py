@@ -157,5 +157,38 @@ def getClassRoster(data):
     finally:
         closeConnection(db, cursor)
 
+
+###################### create Student
+
+@app.route("/createStudent", methods=['POST', 'OPTIONS'])
+def studentRequest():
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
+        return response
+    data = request.get_json()
+    return jsonify(createStudent(data))
+
+def createStudent(data):
+    db, cursor = getCursor()
+
+    try:
+        classID = data.get("classID")
+        studentName = data.get("studentName")
+
+        # add student to class from classID
+        cursor.execute("INSERT INTO Student (classID, studentName) VALUES (%s, %s)", (classID, studentName))
+
+        returnData={}
+        returnData['sucesss'] = True
+        return returnData
+    except:
+        returnData['sucesss'] = False
+        return returnData
+
+    finally:
+        closeConnection(db, cursor)
+
 ######################
+
 app.run(host="0.0.0.0", port=5000)

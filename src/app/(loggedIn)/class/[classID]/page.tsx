@@ -17,7 +17,7 @@ export default async function Class({ params, } : { params: Promise<{classID: nu
                    marginLeft:'10px',
                    }}>
         <h2>Class Roster</h2>
-        <AddStudentButton />
+        <AddStudentButton classID={classID}/>
       </div>
       <StudentAttendance classID={classID}/>
       This is the class page, they should have a different one for each classID

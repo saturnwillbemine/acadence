@@ -22,11 +22,12 @@ interface StudentAttendanceData {
 export default function StudentAttendance({ classID }: { classID: number }) {
   const [attendanceData, setAttendanceData] = useState<StudentAttendanceData[]>([]);
 
-  useEffect(() => {
-    const fetchRoster = async () => {
+   const fetchRoster = async () => {
       const data = await requestRoster(classID);
       setAttendanceData(data);
     }
+
+  useEffect(() => {
     fetchRoster();
   }, [classID])
 
