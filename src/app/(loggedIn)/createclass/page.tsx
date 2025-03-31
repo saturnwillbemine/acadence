@@ -1,65 +1,66 @@
 'use client';
-import { TextInput, Button, Container, Title, Paper, Stack, Textarea } from '@mantine/core';
+import { TextInput, Button, Container, Title, Paper, Stack, Textarea, Select } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from 'mantine-form-zod-resolver';
+import { z } from 'zod';
+import requestClassCreation from '@/scripts/requestClassCreation';
+import { useSession } from '@/scripts/userSessionStore';
 
 // this would normally come from API
-const exampleClassList = {
-  classes: [
-    {
-      className: 'Class 1',
-      deptName: 'C1',
-      classDesc: 'This is class 1',
-      classID: 10
-    }
-  ],
-  nextId: 51
-};
-
 export default function CreateClass() {
+
+  const professorID = useSession((state) => state.professorID)
+
   const router = useRouter();
+
+  const classSchema = z.object({
+    className: z.string({
+      required_error: "Class Name must not be empty"
+    }).max(50, {message: "Class Name exceeds 50 characters"}),
+    deptName: z.enum(['CS', 'MATH', 'HIST', 'KIN', 'POLI', 'BIO', 'ENG'], {message: "Department Name must be selected"}),
+    classDesc: z.string().max(90, {message: "Description exceeds 90 characters"})
+
+  });
   
-  const form = useForm({
+  const classForm = useForm({
+    mode: 'uncontrolled',
     initialValues: {
       className: '',
       deptName: '',
       classDesc: '',
     },
-    validate: {
-      className: (value) => (value.length < 2 ? 'Class name must be at least 2 characters' : null),
-      deptName: (value) => (value.length === 0 ? 'Department name is required' : null),
-      classDesc: (value) => (value.length < 10 ? 'Description must be at least 10 characters' : null),
-    },
+    validate: zodResolver(classSchema)
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-
-    // this is where i would normally make an API request
-    console.log('Form submitted with values:', values);
-    console.log('This would create a new class with ID:', exampleClassList.nextId);
-    
-    router.push('/dashboard');
-  };
+   const submitClassForm = async (values: any) => {
+      const success = await requestClassCreation(professorID, values.className, values.deptName, values.classDesc);
+      if (success) {
+        console.log('Form values:', values);
+        router.push('/dashboard')
+      }
+    };
 
   return (
     <Container size="sm">
       <Title order={1} mb="lg" ta="center">Create New Class</Title>
       
       <Paper shadow="sm" p="xl" withBorder>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={classForm.onSubmit(submitClassForm)}>
           <Stack>
             <TextInput
               label="Class Name"
               placeholder="Introduction to Computer Science"
               required
-              {...form.getInputProps('className')}
+              {...classForm.getInputProps('className')}
             />
 
-            <TextInput
-              label="Department Name"
-              placeholder="CS"
+            <Select
+              label="Department"
+              placeholder="Pick Department"
+              data={['CS', 'MATH', 'HIST', 'KIN', 'POLI', 'BIO', 'ENG']}
+              {...classForm.getInputProps('deptName')}
               required
-              {...form.getInputProps('deptName')}
             />
 
             <Textarea
@@ -67,7 +68,7 @@ export default function CreateClass() {
               placeholder="Enter a detailed description of the class"
               required
               minRows={3}
-              {...form.getInputProps('classDesc')}
+              {...classForm.getInputProps('classDesc')}
             />
 
             <Button type="submit" color="myColor" fullWidth mt="md">

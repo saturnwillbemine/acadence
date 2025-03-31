@@ -161,7 +161,7 @@ def getClassRoster(data):
 ###################### create Student
 
 @app.route("/createStudent", methods=['POST', 'OPTIONS'])
-def studentRequest():
+def makeStudentRequest():
     if request.method == 'OPTIONS':
         response = jsonify()
         response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
@@ -182,6 +182,41 @@ def createStudent(data):
         returnData={}
         returnData['sucesss'] = True
         return returnData
+    except:
+        returnData['sucesss'] = False
+        return returnData
+
+    finally:
+        closeConnection(db, cursor)
+
+###################### create Class
+
+@app.route("/createClass", methods=['POST', 'OPTIONS'])
+def makeClassRequest():
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
+        return response
+    data = request.get_json()
+    return jsonify(createClass(data))
+
+def createClass(data):
+    db, cursor = getCursor()
+
+    try:
+        professorID = data.get("professorID")
+        className = data.get("className")
+        deptName = data.get("deptName")
+        classDesc = data.get("classDesc")
+
+        # add class from data
+        cursor.execute("INSERT INTO Classes (professorID, className, deptName, classDesc) VALUES (%s, %s, %s, %s)", (professorID, className, deptName, classDesc))
+
+        returnData={}
+        returnData['sucesss'] = True
+        print(returnData)
+        return returnData
+    
     except:
         returnData['sucesss'] = False
         return returnData
