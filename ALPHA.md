@@ -94,4 +94,4 @@ An example of how I'm adding an absence to the record table, this would show up 
 (1, 'unexcused', '2025-03-30', 1, 1);`
 
 This is what the professor would see after marking them.
-![Screenshot](https://i.ibb.co/01zzN0V/Screenshot-2025-03-31-at-8-44-06-AM.png)
+[![Screenshot](https://i.ibb.co/01zzN0V/Screenshot-2025-03-31-at-8-44-06-AM.png)]
