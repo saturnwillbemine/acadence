@@ -21,7 +21,7 @@ export default function AddStudentButton({classID} : { classID: number }) {
       if (success) {
         console.log('Form values:', values);
         close();
-        window.location.reload();
+        window.location.reload(); // reload on success to see new students
       }
     };
   
@@ -43,7 +43,7 @@ export default function AddStudentButton({classID} : { classID: number }) {
 
   return (
     <div>
-      <Modal opened={opened} onClose={close} title="AddStudent" centered>
+      <Modal opened={opened} onClose={close} title="Add a Student" centered>
         <form onSubmit={studentForm.onSubmit((values) => submitStudentForm(values))}>
                   <TextInput label="Student Name" 
                   placeholder="Jane Doe" 

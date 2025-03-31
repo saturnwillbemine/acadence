@@ -7,7 +7,6 @@ import { z } from 'zod';
 import requestClassCreation from '@/scripts/requestClassCreation';
 import { useSession } from '@/scripts/userSessionStore';
 
-// this would normally come from API
 export default function CreateClass() {
 
   const professorID = useSession((state) => state.professorID)
@@ -20,7 +19,6 @@ export default function CreateClass() {
     }).max(50, {message: "Class Name exceeds 50 characters"}),
     deptName: z.enum(['CS', 'MATH', 'HIST', 'KIN', 'POLI', 'BIO', 'ENG'], {message: "Department Name must be selected"}),
     classDesc: z.string().max(90, {message: "Description exceeds 90 characters"})
-
   });
   
   const classForm = useForm({
