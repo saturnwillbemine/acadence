@@ -20,7 +20,7 @@ Although my use of model-view-controller wasn't intentional, looking at my proje
 ## Organization
 The IDE did start with giving me a basic React folder structure. I changed it to this though by putting everything into src/app and a src/scripts. The parenthesis around the **loggedIn** folder indicate that its a group in which only the **layout.tsx** in the folder renders on top of every page in it.
 
-`
+```
 acadence/
 ├── src/
 │   ├── app
@@ -52,7 +52,7 @@ acadence/
 ├── README.md
 ├── ALPHA.md
 └── etc...
-`
+```
 
 ## Key Data Structure and Function
 This is the function that the API performs when called to query the database and grab the student roster for a certain class and that class' attendance for the day. For attendance, we grab all of the absent/late students and put them in a dictionary. We then go through that list of students and if the student isn't in the dictionary with an absence we mark them present and we return the data to Next.js.
