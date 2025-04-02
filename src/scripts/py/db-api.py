@@ -259,4 +259,40 @@ def getAllStudents(data):
         closeConnection(db, cursor)
 
 ######################
+
+@app.route("/getStudentAttendance", methods=['POST', 'OPTIONS'])
+def getStudentAttendanceRequest():
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
+        return response
+    data = request.get_json()
+    return jsonify(getStudentAttendance(data))
+
+def getStudentAttendance(data):
+    db, cursor = getCursor()
+
+    try:
+        studentName = data.get("studentName")
+
+        # grab list of every students absences from every class
+        cursor.execute("SELECT Attendance.studentID, Student.studentName, recordDate, studentStatus From Attendance LEFT JOIN Student on Student.studentID = Attendance.studentID WHERE Student.studentName = %s", (studentName,))
+        result = cursor.fetchall()
+
+        returnData = []
+
+        for i in range(len(result)):
+            returnData.append({
+                'studentID': result[i][0],
+                'studentName': result[i][1],
+                'recordDate': result[i][2],
+                'studentStatus': result[i][3]
+
+            })
+        return returnData
+
+    finally:
+        closeConnection(db, cursor)
+
+######################
 app.run(host="0.0.0.0", port=5000)
