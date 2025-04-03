@@ -3,7 +3,6 @@ import StudentListSort from "@/app/components/StudentList";
 import StudentCalendar from "@/app/components/StudentCalendar";
 import { useSession } from "@/scripts/userSessionStore";
 import { useEffect, useState } from "react";
-import { UnstyledButton } from "@mantine/core";
 import requestStudentAttendance from "@/scripts/requestStudentAttendance";
 
   export default function Students() {
@@ -25,12 +24,9 @@ import requestStudentAttendance from "@/scripts/requestStudentAttendance";
         }
      }, [selection]);
 
-    
-
       return (
         <div>
           <h1>Student List</h1>
-          <p>This should show a selectable list of students where i can pull up their attendance data</p>
 
           <div style={{ display: 'flex', flexDirection: 'row'}}>
           <StudentListSort professorID={professorID}
@@ -40,11 +36,6 @@ import requestStudentAttendance from "@/scripts/requestStudentAttendance";
           <div style={{marginTop: '5%'}}>
             <StudentCalendar attendanceData={attendanceData}/>
           </div>
-
-            <UnstyledButton onClick={() => getStudentAttendance()}> 
-              Print Selection
-            </UnstyledButton>
-
           </div>
         </div>
       );

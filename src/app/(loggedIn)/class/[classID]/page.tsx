@@ -20,8 +20,6 @@ export default async function Class({ params, } : { params: Promise<{classID: nu
         <AddStudentButton classID={classID}/>
       </div>
       <StudentAttendance classID={classID}/>
-      This is the class page, they should have a different one for each classID
-      This one's classID is {classID} 
     </div>
   );
 }

@@ -35,12 +35,6 @@ const navbarData = [
     rightSection: <HiMiniArrowRight size={16}/>,
     href: '/students'
   },
-  {
-    icon: HiCog,
-    label: 'Settings',
-    rightSection: <HiMiniArrowRight size={16}/>,
-    href: '/settings'
-  },
 ]
 
 //  this is used to create the layout of the application for the navbar and header
