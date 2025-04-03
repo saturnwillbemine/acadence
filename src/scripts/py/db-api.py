@@ -329,4 +329,26 @@ def submitAttendance(data):
 
 ######################
 
+@app.route("/getAttendanceStats", methods=['POST', 'OPTIONS'])
+def getAttendanceStatsRequest():
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
+        return response
+    data = request.get_json()
+    return jsonify(getAttendanceStats(data))
+
+def getAttendanceStats(data):
+    db, cursor = getCursor()
+    try:
+        fromDate = data.get('fromDate')
+        toDate = data.get('toDate')
+
+        cursor.execute("SELECT COUNT(*) FROM Attendance WHERE recordDate BETWEEN %s and %s", (fromDate, toDate))
+        result = cursor.fetchone()
+
+        return result[0]
+    finally:
+        closeConnection(db, cursor)
+
 app.run(host="0.0.0.0", port=5000)
