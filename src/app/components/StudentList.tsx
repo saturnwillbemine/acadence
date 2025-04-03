@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { HiChevronDown, HiChevronUp, HiMagnifyingGlass, HiMiniMinus } from 'react-icons/hi2';
 import {
   Center,
@@ -82,7 +82,11 @@ function sortData(
 }
 
 
-export default function StudentListSort({ professorID } : {professorID : number}) {
+export default function StudentListSort({ professorID, setSelection, selection } : 
+
+  {professorID : number, 
+  setSelection: Dispatch<SetStateAction<string>>, 
+  selection: string }) {
 
    const [rowData, setRowData] = useState<RowData[]>([]);
   
@@ -106,9 +110,6 @@ export default function StudentListSort({ professorID } : {professorID : number}
 
   // state for tracking sort direction
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
-
-  // state for tracking selected row
-  const [selection, setSelection] = useState<string>('');
 
   useEffect(() => {
     setSortedData(sortData(rowData, { sortBy, reversed: reverseSortDirection, search }));
@@ -189,9 +190,6 @@ export default function StudentListSort({ professorID } : {professorID : number}
           )}
         </Table.Tbody>
       </Table>
-      <UnstyledButton onClick={() => console.log(selection)}> 
-        Print Selection
-      </UnstyledButton>
     </ScrollArea>
   );
 }
