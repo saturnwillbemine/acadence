@@ -289,10 +289,44 @@ def getStudentAttendance(data):
                 'studentStatus': result[i][3]
 
             })
+    
         return returnData
 
     finally:
         closeConnection(db, cursor)
 
 ######################
+
+@app.route("/submitAttendance", methods=['POST', 'OPTIONS'])
+def submitAttendanceRequest():
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers.add('Allow-Control-Allow-Headers', 'Content-Type')
+        return response
+    data = request.get_json()
+    return jsonify(submitAttendance(data))
+
+def submitAttendance(data):
+    db, cursor = getCursor()
+    try:
+        current_time = datetime.now().strftime('%Y-%m-%d')
+        classID = data.get('classID')
+        professorID = data.get('professorID')
+        lists = data.get('lists', {})
+        
+        for status, student_ids in lists.items():
+            for student_id in student_ids:
+                cursor.execute(
+                    """INSERT INTO Attendance 
+                       (studentID, studentStatus, recordDate, classID, recorded_by)
+                       VALUES (%s, %s, %s, %s, %s)""",
+                    (student_id, status.lower(), current_time, classID, professorID)
+                )
+        return {'success': True}
+
+    finally:
+        closeConnection(db, cursor)
+
+######################
+
 app.run(host="0.0.0.0", port=5000)
