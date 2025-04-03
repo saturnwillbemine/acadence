@@ -1,12 +1,14 @@
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme, MantineColorsTuple } from '@mantine/core';
 
 import Shell from '../components/AppShell';
 import CheckAuth from '../components/CheckAuth';
 
+import { Notifications } from '@mantine/notifications';
 
 const myColor: MantineColorsTuple = [
   '#f1fbef',
@@ -38,6 +40,7 @@ export default function AppLayout({ children, } : { children : React.ReactNode;}
     <section>
       <CheckAuth>  {/* this is to make sure that the user is logged in*/}
         <MantineProvider theme={theme}>
+          <Notifications/>
           <Shell main={children}/>
         </MantineProvider>
       </CheckAuth>
