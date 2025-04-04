@@ -7,7 +7,6 @@ import { useSession } from '@/scripts/userSessionStore';
 import requestSubmitAttendance from '@/scripts/requestSubmitAttendance';
 import { notifications } from '@mantine/notifications';
 
-
 const statusColors: Record<string, string> = {
   present: 'myColor',
   excused: 'orange',
@@ -20,7 +19,6 @@ interface StudentAttendanceData {
   studentName: string;
   status: string;
 }
-
 
 export default function StudentAttendance({ classID }: { classID: number }) {
   const [attendanceData, setAttendanceData] = useState<StudentAttendanceData[]>([]);
@@ -41,7 +39,7 @@ export default function StudentAttendance({ classID }: { classID: number }) {
     fetchRoster();
   }, [classID])
 
-  const handleAttendanceClick = (studentID: number, status: 'excused' | 'unexcused' | 'late') => {
+  const handleAttendanceClick = ( studentID: number, status: 'excused' | 'unexcused' | 'late' ) => {
     setAttendanceLists(prev => {
       // remove from all lists first
       const newLists = {
@@ -101,6 +99,7 @@ export default function StudentAttendance({ classID }: { classID: number }) {
                 <HiOutlineCheck size={16}/>
             </ActionIcon>
           </Tooltip>
+
           <Tooltip label='Mark Unexcused Absence'>
             <ActionIcon variant="subtle" 
             color={attendanceLists.unexcused.includes(item.studentID) ? 'red' : 'gray'}
@@ -111,6 +110,7 @@ export default function StudentAttendance({ classID }: { classID: number }) {
                 <HiOutlineXMark size={16}/>
             </ActionIcon>
           </Tooltip>
+          
           <Tooltip label='Mark Late'>
             <ActionIcon variant="subtle" 
             color={attendanceLists.late.includes(item.studentID) ? 'yellow' : 'gray'}
