@@ -1,18 +1,41 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { HiCalendarDateRange, HiChevronUp, HiChevronDown } from 'react-icons/hi2';
 import { Group, Paper, Text, UnstyledButton, Tooltip } from '@mantine/core';
 import classes from './module-css/AttendanceStats.module.css';
-
-const data = [
-  { icon: HiCalendarDateRange, label: 'Absences This Week' },
-  { icon: HiCalendarDateRange, label: 'Absences This Month' },
-];
+import requestAttendanceStats from '@/scripts/requestAttendanceStats';
 
 export default function AttendanceStats() {
   const [date, setDate] = useState(new Date(2025, 3, ));
+  const [weeklyAbsences, setWeeklyAbsences] = useState(0);
+  const [monthlyAbsences, setMonthlyAbsences] = useState(0);
+
+  // fetch attendance stats whenever date changes
+  useEffect(() => {
+    const fetchStats = async () => {
+      // for weekly stats
+      const weekStart = dayjs(date).startOf('week').format('YYYY-MM-DD');
+      const weekEnd = dayjs(date).endOf('week').format('YYYY-MM-DD');
+      const weeklyData = await requestAttendanceStats(weekStart, weekEnd);
+      setWeeklyAbsences(weeklyData || 0);
+
+      // for monthly stats
+      const monthStart = dayjs(date).startOf('month').format('YYYY-MM-DD');
+      const monthEnd = dayjs(date).endOf('month').format('YYYY-MM-DD');
+      const monthlyData = await requestAttendanceStats(monthStart, monthEnd);
+      setMonthlyAbsences(monthlyData || 0);
+    };
+
+    fetchStats();
+  }, [date]);
+
+  const data = [
+    { icon: HiCalendarDateRange, label: 'Absences This Week', value: weeklyAbsences },
+    { icon: HiCalendarDateRange, label: 'Absences This Month', value: monthlyAbsences},
+  ];
+
 
   const stats = data.map((stat) => (
     <Paper className={classes.stat} radius="md" shadow="md" p="xs" key={stat.label} color='myColor'>
@@ -20,7 +43,7 @@ export default function AttendanceStats() {
       <div>
         <Text className={classes.label}>{stat.label}</Text>
         <Text fz="xs" className={classes.count}>
-          <span className={classes.value}>#</span> absences
+          <span className={classes.value}>{stat.value}</span> absences
         </Text>
       </div>
     </Paper>
