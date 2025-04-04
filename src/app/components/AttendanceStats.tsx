@@ -7,7 +7,7 @@ import { Group, Paper, Text, UnstyledButton, Tooltip } from '@mantine/core';
 import classes from './module-css/AttendanceStats.module.css';
 import requestAttendanceStats from '@/scripts/requestAttendanceStats';
 
-export default function AttendanceStats() {
+export default function AttendanceStats({classID} : { classID : number}) {
   const [date, setDate] = useState(new Date(2025, 3, ));
   const [weeklyAbsences, setWeeklyAbsences] = useState(0);
   const [monthlyAbsences, setMonthlyAbsences] = useState(0);
@@ -18,13 +18,13 @@ export default function AttendanceStats() {
       // for weekly stats
       const weekStart = dayjs(date).startOf('week').format('YYYY-MM-DD');
       const weekEnd = dayjs(date).endOf('week').format('YYYY-MM-DD');
-      const weeklyData = await requestAttendanceStats(weekStart, weekEnd);
+      const weeklyData = await requestAttendanceStats(weekStart, weekEnd, classID);
       setWeeklyAbsences(weeklyData || 0);
 
       // for monthly stats
       const monthStart = dayjs(date).startOf('month').format('YYYY-MM-DD');
       const monthEnd = dayjs(date).endOf('month').format('YYYY-MM-DD');
-      const monthlyData = await requestAttendanceStats(monthStart, monthEnd);
+      const monthlyData = await requestAttendanceStats(monthStart, monthEnd, classID);
       setMonthlyAbsences(monthlyData || 0);
     };
 

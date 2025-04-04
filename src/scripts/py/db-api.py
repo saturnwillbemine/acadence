@@ -343,8 +343,9 @@ def getAttendanceStats(data):
     try:
         fromDate = data.get('fromDate')
         toDate = data.get('toDate')
+        classID = data.get('classID')
 
-        cursor.execute("SELECT COUNT(*) FROM Attendance WHERE recordDate BETWEEN %s and %s", (fromDate, toDate))
+        cursor.execute("SELECT COUNT(*) FROM Attendance WHERE recordDate BETWEEN %s and %s and classID = %s", (fromDate, toDate, classID))
         result = cursor.fetchone()
 
         return result[0]

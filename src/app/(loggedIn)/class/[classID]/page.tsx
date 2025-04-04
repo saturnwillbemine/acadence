@@ -9,7 +9,7 @@ export default async function Class({ params, } : { params: Promise<{classID: nu
 
   return (
     <div>
-      <AttendanceStats />
+      <AttendanceStats classID={classID}/>
       <div style={{display: 'flex', flexDirection: 'row', 
                    justifyContent: 'space-between', 
                    alignItems: 'center', 
